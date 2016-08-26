@@ -16,7 +16,7 @@ before_script:
 
 script:
   - docker build --tag="$tag" .
-  - docker run --rm digitalbackstage/php:$VARIANT $TEST_COMMAND
+  - docker run --rm $tag $TEST_COMMAND
 
 after_script:
   - docker images
