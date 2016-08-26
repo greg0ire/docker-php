@@ -59,6 +59,8 @@ RUN set -xe \
 
         # Time Zone
         && echo "date.timezone=${PHP_TIMEZONE:-UTC}" > $PHP_INI_DIR/conf.d/date_timezone.ini \
+        # Short open tags
+        && echo "short_open_tag = Off" > $PHP_INI_DIR/conf.d/disable_short_open_tag.ini \
 
         # install composer
         && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
