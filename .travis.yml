@@ -1,0 +1,22 @@
+branches:
+  only:
+    - master
+
+language: bash
+services: docker
+
+env:
+  - VARIANT=alpine CONTEXT=. TEST_COMMAND="php -i"
+  - VARIANT=fpm-alpine CONTEXT=fpm TEST_COMMAND="php-fpm -i"
+
+before_script:
+  - env | sort
+  - cd "$CONTEXT"
+  - tag="digitalbackstage/php:${VARIANT}"
+
+script:
+  - docker build --tag="$tag" .
+  - docker run --rm digitalbackstage/php:$VARIANT $TEST_COMMAND
+
+after_script:
+  - docker images
