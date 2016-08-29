@@ -12,7 +12,8 @@ env:
 before_script:
   - env | sort
   - cd "$CONTEXT"
-  - TAG="digitalbackstage/php:${VARIANT}"
+  - IMAGE="digitalbackstage/php"
+  - TAG="${IMAGE}:${VARIANT}"
 
 script:
   - docker build --tag="$TAG" .
