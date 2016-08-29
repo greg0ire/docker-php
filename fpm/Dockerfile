@@ -57,6 +57,11 @@ RUN set -xe \
         && apk add --virtual .phpext-rundeps $runDeps \
         && apk del .phpext-builddeps \
 
+        ## Copy sample files
+        &&  docker-php-source extract \
+        && cp /usr/src/php/php.ini-* $PHP_INI_DIR \
+        && docker-php-source delete \
+
         # Time Zone
         && echo "date.timezone=${PHP_TIMEZONE:-UTC}" > $PHP_INI_DIR/conf.d/date_timezone.ini \
 
