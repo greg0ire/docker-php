@@ -2,4 +2,4 @@
 
 ## Installation
 
-docker pull digitalbackstage/php
+    docker pull digitalbackstage/php
