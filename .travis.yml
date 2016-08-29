@@ -30,7 +30,7 @@ after_success:
     fi
   - if [ -n "$TRAVIS_TAG" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    TAGGED_IMAGE= "${REPOSITORY}:${TRAVIS_TAG}-${VARIANT}";
+    TAGGED_IMAGE="${REPOSITORY}:${TRAVIS_TAG}-${VARIANT}";
     docker tag $IMAGE $TAGGED_IMAGE;
     docker push $TAGGED_IMAGE;
     fi
