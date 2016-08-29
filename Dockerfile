@@ -76,6 +76,9 @@ RUN set -xe \
         # cleanup from apk
         && rm -rf /tmp/* /var/cache/apk/*
 
+ONBUILD COPY . /srv
+ONBUILD RUN chown --recursive www-data:www-data /srv
+
 WORKDIR /srv
 
 CMD ["php", "-a"]
