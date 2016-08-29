@@ -1,6 +1,7 @@
 branches:
   only:
     - master
+    - /^\d+.\d+.\d+$/
 
 language: bash
 services: docker
@@ -12,11 +13,24 @@ env:
 before_script:
   - env | sort
   - cd "$CONTEXT"
-  - tag="digitalbackstage/php:${VARIANT}"
+  - REPOSITORY="digitalbackstage/php"
+  - IMAGE="${REPOSITORY}:${VARIANT}"
 
 script:
-  - docker build --tag="$tag" .
-  - docker run --rm digitalbackstage/php:$VARIANT $TEST_COMMAND
+  - docker build --tag="$IMAGE" .
+  - docker run --rm $IMAGE $TEST_COMMAND
 
 after_script:
   - docker images
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push $IMAGE;
+    fi
+  - if [ -n "$TRAVIS_TAG" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    TAGGED_IMAGE= "${REPOSITORY}:${TRAVIS_TAG}-${VARIANT}"
+    docker tag $IMAGE $TAGGED_IMAGE
+    docker push $TAGGED_IMAGE;
+    fi
